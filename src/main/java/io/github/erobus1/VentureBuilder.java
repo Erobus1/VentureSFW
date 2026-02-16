@@ -3,12 +3,13 @@ package io.github.erobus1;
 import io.github.erobus1.bot.commands.SlashCommand;
 import io.github.erobus1.bot.commands.impl.HelpCommand;
 import io.github.erobus1.bot.defaultlisteners.CommandListener;
-import io.github.erobus1.internal.Logger;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static io.github.erobus1.Venture.getLogger;
 
 /**
  * Helper class to build the Venture class.
@@ -25,7 +26,7 @@ public class VentureBuilder {
     private VentureBuilder(String token, String testGuildId, String... developers) {
         TOKEN = token;
         TESTGUILDID = testGuildId;
-        DEVELOPERS = developers.length == 1 && developers[0].equals("") ? new ArrayList<>() : Arrays.asList(developers);
+        DEVELOPERS = developers.length == 1 && developers[0].isEmpty() ? new ArrayList<>() : Arrays.asList(developers);
         EVENT_LISTENERS.add(new CommandListener());
     }
     public static VentureBuilder createDefault(String token, String testGuildId, String... developers) {
@@ -70,24 +71,24 @@ public class VentureBuilder {
 
     public void build() {
 
-        if (COMMANDS.size() == 0) {
-            System.out.println(Logger.RED(
-                    "Warning: Are you sure you don't want to add any commands?"
-            ));
+        if (COMMANDS.isEmpty()) {
+            getLogger().info(
+                    "No commands initialized."
+            );
         }
 
         if (helpCommand) addCommands(new HelpCommand());
 
-        if (DEVELOPERS.size() == 0) {
-            System.out.println(Logger.RED(
-                    "Warning: No developer ids have been added to the bot."
-            ));
+        if (DEVELOPERS.isEmpty()) {
+            getLogger().warn(
+                    "No developer ids have been added to the bot."
+            );
         }
 
-        if (EVENT_LISTENERS.size() == 0) {
-            System.out.println(Logger.CYAN(
-                    "Info: No additional listeners were added!"
-            ));
+        if (EVENT_LISTENERS.isEmpty()) {
+            getLogger().info(
+                    "No additional listeners were added!"
+            );
         }
 
         Venture.create(TOKEN, TESTGUILDID, DEVELOPERS, EVENT_LISTENERS.toArray(new ListenerAdapter[0]), COMMANDS.toArray(new SlashCommand[0]), BOT_INFO);

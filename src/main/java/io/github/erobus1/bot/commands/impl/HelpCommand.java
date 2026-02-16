@@ -53,10 +53,9 @@ public class HelpCommand extends SlashCommand {
         SlashCommand command = Venture.getCmdHandler().getCommand(argument.toLowerCase());
         if (command != null) {
             CommandInfo cmdInfo = CommandHelper.getInfo(command);
-            CommandArguments args = command.getArguments();
             embed.setDescription("**" + argument + " command help**\n\n" + cmdInfo.getDescription());
 
-            if (cmdInfo.getUsage().length() > 0) {
+            if (!cmdInfo.getUsage().isEmpty()) {
                 embed.addField("Usage", cmdInfo.getUsage(), false);
             }
             embed.addField("Category", cmdInfo.getCategory(), false);

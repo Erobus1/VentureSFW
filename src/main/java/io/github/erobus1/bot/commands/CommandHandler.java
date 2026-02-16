@@ -4,7 +4,6 @@ import io.github.erobus1.Venture;
 import io.github.erobus1.bot.commands.util.CommandHelper;
 import io.github.erobus1.bot.commands.util.CommandInfo;
 import io.github.erobus1.bot.commands.util.Permission;
-import io.github.erobus1.internal.Logger;
 import io.github.erobus1.internal.Note;
 import io.github.erobus1.internal.embeds.DefaultEmbeds;
 import io.github.erobus1.internal.exceptions.FrameworkException;
@@ -16,6 +15,7 @@ import net.dv8tion.jda.internal.interactions.CommandDataImpl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import static io.github.erobus1.Venture.getLogger;
 
 public class CommandHandler {
     private final HashMap<String, SlashCommand> COMMANDS = new HashMap<>();
@@ -30,13 +30,9 @@ public class CommandHandler {
             COMMANDS.put(name, cmd);
             upsertCommand(cmd);
             if (!CATEGORIES.contains(cmdInfo.category())) CATEGORIES.add(cmdInfo.category().toLowerCase().substring(0, 1).toUpperCase() + cmdInfo.category().toLowerCase().substring(1));
-            System.out.println(Logger.GREEN(
-                    "Registering \"" + name + "\" command. Class: " + cmdClass.getName()
-            ));
+            getLogger().info("Registering \"{}\" command. Class: {}", name, cmdClass.getName());
             if (cmdClass.isAnnotationPresent(Note.class)) {
-                System.out.println(Logger.CYAN(
-                        " --> " + cmdClass.getAnnotation(Note.class).content()
-                ));
+                getLogger().info(" --> {}", cmdClass.getAnnotation(Note.class).content());
             }
         }
     }
