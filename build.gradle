@@ -1,46 +1,55 @@
 plugins {
-    id 'java'
+    id 'java-library'
     id 'maven-publish'
 }
 
-group = 'com.github.erobus1'
+group = 'io.github.erobus1'
+version = '1.2.0'
 
-group 'io.github.erobus1'
-version '1.0-SNAPSHOT'
+description = 'VentureFW - A lightweight command framework for JDA bots'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+    withSourcesJar()
+    withJavadocJar()
+}
 
 repositories {
     mavenCentral()
-
     maven {
-        name 'm2-dv8tion'
-        url 'https://m2.dv8tion.net/releases'
+        name = 'm2-dv8tion'
+        url = uri('https://m2.dv8tion.net/releases')
     }
-    maven { url "https://jitpack.io" }
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-
-    implementation("net.dv8tion:JDA:6.3.1") {
+    implementation('net.dv8tion:JDA:6.3.1') {
         exclude module: 'opus-java'
     }
-    implementation "ch.qos.logback:logback-classic:1.5.6"
-    implementation 'com.github.jitpack:gradle-simple:1.0'
+    implementation 'ch.qos.logback:logback-classic:1.5.6'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 17
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
 }
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            groupId = 'io.github.erobus1'
-            artifactId = 'VentureFW'
-            version = '1.1'
-
             from components.java
+
+            pom {
+                name = 'VentureFW'
+                description = project.description
+                url = 'https://github.com/Erobus1/VentureSFW'
+            }
         }
     }
-}
-
-test {
-    useJUnitPlatform()
 }

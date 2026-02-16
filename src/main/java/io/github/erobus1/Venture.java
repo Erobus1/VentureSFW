@@ -1,6 +1,5 @@
 package io.github.erobus1;
 
-import com.sun.tools.javac.Main;
 import io.github.erobus1.bot.commands.CommandHandler;
 import io.github.erobus1.bot.commands.SlashCommand;
 import io.github.erobus1.internal.exceptions.FrameworkException;
@@ -21,7 +20,7 @@ public class Venture {
     private static SlashCommand[] COMMANDS;
     private static JDA jda;
     private static CommandHandler HANDLER;
-    private static final Logger log = LoggerFactory.getLogger(Main.class);
+    private static final Logger log = LoggerFactory.getLogger(Venture.class);
 
     private static String TESTGUILDID;
 
